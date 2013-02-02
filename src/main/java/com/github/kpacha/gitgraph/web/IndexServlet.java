@@ -13,6 +13,12 @@ import org.slf4j.LoggerFactory;
 
 import com.github.kpacha.gitgraph.web.controller.GitHubController;
 
+/**
+ * Ridiculous servlet to dispatch the http request from the users to the
+ * controller
+ * 
+ * @author kpacha
+ */
 public class IndexServlet extends HttpServlet {
 
     private static final long serialVersionUID = 9163511149703583275L;
