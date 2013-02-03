@@ -97,6 +97,28 @@ public class GitHubRepoService {
     }
 
     /**
+     * Get all the stored repositories sorted by a field
+     * 
+     * @param orderBy
+     * @return
+     */
+    public Collection<GitHubRepo> getSortedBy(final String orderBy) {
+	return getSortedBy(orderBy, false);
+    }
+
+    /**
+     * Get all the stored repositories sorted by a field
+     * 
+     * @param orderBy
+     * @param ascentSorting
+     * @return
+     */
+    public Collection<GitHubRepo> getSortedBy(final String orderBy,
+	    final boolean ascentSorting) {
+	return dao.getAllSortedBy(orderBy, ascentSorting);
+    }
+
+    /**
      * Look for a repository in the store
      * 
      * @param owner

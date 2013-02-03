@@ -66,9 +66,13 @@ public class GitHubController {
      * @param request
      * @return
      */
-    public String getAll(final HttpServletRequest request) {
+    public String home(final HttpServletRequest request) {
 	log.debug("looking for all the stored repos");
-	request.setAttribute("repos", getService().getAll());
+	request.setAttribute("reposByForks", getService().getSortedBy("forks"));
+	request.setAttribute("reposByWatchers",
+		getService().getSortedBy("watchers"));
+	request.setAttribute("reposByLastPushedAt",
+		getService().getSortedBy("pushedAt"));
 	return "index";
     }
 

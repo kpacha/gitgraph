@@ -46,7 +46,6 @@ public class AbstractDaoTest {
 	if (dao == null) {
 	    dao = new GitHubRepoDao();
 	}
-	dao.setEntityManagerFactory(null);
     }
 
     @After

@@ -44,7 +44,7 @@ public class IndexServlet extends HttpServlet {
 	    view = controller.getByCredentials(request);
 	} else {
 	    // get all
-	    view = controller.getAll(request);
+	    view = controller.home(request);
 	}
 
 	// delegate the rendering to the jsp view

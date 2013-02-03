@@ -111,23 +111,31 @@ public class GitHubControllerTest {
     }
 
     @Test
-    public void testGetAll() throws IOException {
+    public void testHome() throws IOException {
 	GitHubRepo gitHubRepo = ModelHelper.getMockedGitHubRepo();
 	Collection<GitHubRepo> repos = new ArrayList<GitHubRepo>();
 	repos.add(gitHubRepo);
 
 	// Should ask for a repo to the service
-	EasyMock.expect(service.getAll()).andReturn(repos);
+	EasyMock.expect(service.getSortedBy(EasyMock.anyObject(String.class)))
+		.andReturn(repos).times(3);
 	EasyMock.replay(service);
 	controller.setService(service);
 
 	// Should set the repos parameter
-	request.setAttribute(EasyMock.matches("repos"), EasyMock.eq(repos));
+	request.setAttribute(EasyMock.matches("reposByForks"),
+		EasyMock.eq(repos));
+	EasyMock.expectLastCall();
+	request.setAttribute(EasyMock.matches("reposByWatchers"),
+		EasyMock.eq(repos));
+	EasyMock.expectLastCall();
+	request.setAttribute(EasyMock.matches("reposByLastPushedAt"),
+		EasyMock.eq(repos));
 	EasyMock.expectLastCall();
 	EasyMock.replay(request);
 
 	// run
-	Assert.assertEquals("index", controller.getAll(request));
+	Assert.assertEquals("index", controller.home(request));
     }
 
     private void expectGetResult(final GitHubRepo gitHubRepo) {

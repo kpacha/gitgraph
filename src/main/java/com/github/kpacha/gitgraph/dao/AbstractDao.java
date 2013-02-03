@@ -38,6 +38,8 @@ public class AbstractDao<T> {
      */
     private String entityClass;
 
+    private static final int MAX_RESULTS = 5;
+
     /**
      * Set the class name of the extended repository
      * 
@@ -78,15 +80,51 @@ public class AbstractDao<T> {
      * 
      * @return
      */
-    @SuppressWarnings("unchecked")
     public Collection<T> getAll() {
 	log.debug("Getting all the stored " + getEntityClass() + "s");
+	return executeGetQuery("SELECT e FROM " + entityClass + " e ");
+    }
+
+    /**
+     * Simple get all method
+     * 
+     * @return
+     */
+    public Collection<T> getAllSortedBy(final String orderBy,
+	    final boolean isAsc) {
+	log.debug("Getting the stored " + getEntityClass() + "s order by "
+		+ orderBy);
+	return executeGetQuery("SELECT e FROM " + entityClass
+		+ " e ORDER BY e." + orderBy + " " + ((isAsc) ? "ASC" : "DESC"));
+    }
+
+    /**
+     * Execute a get query string with the default limit
+     * 
+     * @param queryString
+     * @return
+     */
+    public Collection<T> executeGetQuery(final String queryString) {
+	return executeGetQuery(queryString, MAX_RESULTS);
+    }
+
+    /**
+     * Execute a get query string
+     * 
+     * @param queryString
+     * @param maxResult
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Collection<T> executeGetQuery(final String queryString,
+	    final int maxResult) {
+	log.debug("Getting the stored " + getEntityClass()
+		+ "s executing the query [" + queryString + "]");
 	final EntityManager entityManager = emf.createEntityManager();
 	List<T> entities = new ArrayList<T>();
 	try {
-	    final Query query = entityManager.createQuery("SELECT e FROM "
-		    + entityClass + " e");
-	    entities = query.getResultList();
+	    final Query query = entityManager.createQuery(queryString);
+	    entities = query.setMaxResults(maxResult).getResultList();
 	    log.debug("Total retrieved entities: " + entities.size());
 	} finally {
 	    entityManager.close();

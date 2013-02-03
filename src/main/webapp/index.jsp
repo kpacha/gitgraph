@@ -56,19 +56,19 @@
                 <h3>Repositories</h3>
                 <h4>Most popular</h4>
                 <ul>
-					<c:forEach var="repo" items="${repos}">
+					<c:forEach var="repo" items="${reposByWatchers}">
 						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
 					</c:forEach>
                 </ul>
                 <h4>Most actives</h4>
                 <ul>
-					<c:forEach var="repo" items="${repos}">
+					<c:forEach var="repo" items="${reposByLastPushedAt}">
 						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
 					</c:forEach>
                 </ul>
                 <h4>Most forked</h4>
                 <ul>
-					<c:forEach var="repo" items="${repos}">
+					<c:forEach var="repo" items="${reposByForks}">
 						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
 					</c:forEach>
                 </ul>
@@ -77,19 +77,19 @@
                 <h3>Users</h3>
                 <h4>Most popular</h4>
                 <ul>
-					<c:forEach var="repo" items="${repos}">
+					<c:forEach var="repo" items="${reposByWatchers}">
 						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
 					</c:forEach>
                 </ul>
                 <h4>Most actives</h4>
                 <ul>
-					<c:forEach var="repo" items="${repos}">
+					<c:forEach var="repo" items="${reposByLastPushedAt}">
 						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
 					</c:forEach>
                 </ul>
                 <h4>Most forked</h4>
                 <ul>
-					<c:forEach var="repo" items="${repos}">
+					<c:forEach var="repo" items="${reposByForks}">
 						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
 					</c:forEach>
                 </ul>

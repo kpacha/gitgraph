@@ -79,6 +79,8 @@ public class PersistenceHelper {
      */
     public static Query getMockedGetAll(List<GitHubRepo> entities) {
 	Query query = EasyMock.createMock(Query.class);
+	EasyMock.expect(query.setMaxResults(EasyMock.anyInt()))
+		.andReturn(query);
 	EasyMock.expect(query.getResultList()).andReturn(entities);
 	EasyMock.replay(query);
 	return query;
