@@ -64,14 +64,6 @@
 			<version>0.9.24</version>
 		</dependency>
 
-		<!-- Test scope -->
-		<!-- <dependency> -->
-		<!-- <groupId>junit</groupId> -->
-		<!-- <artifactId>junit</artifactId> -->
-		<!-- <version>4.5</version> -->
-		<!-- <scope>test</scope> -->
-		<!-- </dependency> -->
-
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
@@ -227,10 +219,10 @@
 				<artifactId>maven-gae-plugin</artifactId>
 				<version>0.9.5</version>
 				<configuration>
-                    <serverId>appengine.google.com</serverId>
-                    <sdkDir>${appengine.sdk.root}</sdkDir>
-                    <appDir>${project.build.directory}/${project.build.finalName}</appDir>
-                </configuration>
+					<serverId>appengine.google.com</serverId>
+					<sdkDir>${appengine.sdk.root}</sdkDir>
+					<appDir>${project.build.directory}/${project.build.finalName}</appDir>
+				</configuration>
 			</plugin>
 
 			<!-- Upload application to the appspot automatically, during release:perform -->
