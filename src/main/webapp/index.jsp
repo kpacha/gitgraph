@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -55,19 +56,25 @@
             <div class="span4">
                 <h3>Repositories</h3>
                 <h4>Most popular</h4>
-                <ul>
+                <ul class="unstyled">
 					<c:forEach var="repo" items="${reposByWatchers}">
 						<li><a href="index?id=<c:out value="${repo.id}"/>"><c:out value="${repo.name}" /></a><div class="pull-right"><c:out value="${repo.watchers}" /> | <c:out value="${repo.forks}" /></div></li>
 					</c:forEach>
                 </ul>
                 <h4>Most actives</h4>
-                <ul>
+                <ul class="unstyled">
 					<c:forEach var="repo" items="${reposByLastPushedAt}">
-						<li><a href="index?id=<c:out value="${repo.id}"/>"><c:out value="${repo.name}" /></a><div class="pull-right"><c:out value="${repo.pushedAt}"/></div></li>
+						<c:set var="date" value="${repo.pushedAt}"/>
+						<li>
+							<a href="index?id=<c:out value="${repo.id}"/>"><c:out value="${repo.name}" /></a>
+							<div class="pull-right">
+								<abbr class="timeago" title="<fmt:formatDate pattern="yyyy-MM-dd" value="${date}" />"><fmt:formatDate pattern="yyyy-MM-dd" value="${date}" /></abbr>
+            				</div>
+						</li>
 					</c:forEach>
                 </ul>
                 <h4>Most forked</h4>
-                <ul>
+                <ul class="unstyled">
 					<c:forEach var="repo" items="${reposByForks}">
 						<li><a href="index?id=<c:out value="${repo.id}"/>"><c:out value="${repo.name}" /></a><div class="pull-right"><c:out value="${repo.forks}" /></div></li>
 					</c:forEach>
@@ -76,19 +83,19 @@
             <div class="span4">
                 <h3>Users</h3>
                 <h4>Most popular</h4>
-                <ul>
+                <ul class="unstyled">
 					<c:forEach var="repo" items="${reposByWatchers}">
 						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
 					</c:forEach>
                 </ul>
                 <h4>Most actives</h4>
-                <ul>
+                <ul class="unstyled">
 					<c:forEach var="repo" items="${reposByLastPushedAt}">
 						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
 					</c:forEach>
                 </ul>
                 <h4>Most forked</h4>
-                <ul>
+                <ul class="unstyled">
 					<c:forEach var="repo" items="${reposByForks}">
 						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
 					</c:forEach>
@@ -140,6 +147,6 @@
         </script>
          -->
     
-    <script src="scripts/8ab52a5b.plugins.js"></script>
+    <script src="scripts/ff0639f4.plugins.js"></script>
 </body>
 </html>
