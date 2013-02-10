@@ -52,7 +52,7 @@
 					    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b class="caret"></b></a>
 					    <ul class="dropdown-menu">
 					    	<li><small><a href="<c:out value="${repo.svnUrl}"/>" target="_blank"><i class="icon-home"></i> see on GitHub</a></small></li>
-					    	<li><small><a href="http://resume.github.com/?<c:out value="${repo.ownerId}"/>" target="_blank"><i class="icon-home"></i> see owner's résumé</a></small></li>
+					    	<li><small><a href="http://resume.github.com/?<c:out value="${repo.ownerId}"/>" target="_blank"><i class="icon-home"></i> see owner's rÃ©sumÃ©</a></small></li>
 					  	</ul>
 					  </li>
 					</ul>
