@@ -63,7 +63,7 @@ public class PersistenceHelper {
     public static Query getMockedGetByIdQuery(GitHubRepo entity) {
 	Query query = EasyMock.createMock(Query.class);
 	EasyMock.expect(
-		query.setParameter(EasyMock.matches("id"),
+		query.setParameter(EasyMock.matches("value"),
 			EasyMock.matches(entity.getId()))).andReturn(query);
 	EasyMock.expect(query.getSingleResult()).andReturn(entity);
 	EasyMock.replay(query);

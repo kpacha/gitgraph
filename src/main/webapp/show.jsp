@@ -11,7 +11,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         
-        <link rel="stylesheet" href="styles/4b6ffa21.main.css">
+        <link rel="stylesheet" href="styles/60bb6b2d.main.css">
         <script src="scripts/vendor/cf69c6f2.modernizr.min.js"></script>
     </head>
     <body>
@@ -84,8 +84,8 @@
                 <form id="search" action="index" method="get">
                     <fieldset>
                         <input type="text" placeholder="owner/name" name="id" class="span12" >
-                        <input type="text" placeholder="Owner" name="owner" class="span12" >
-                        <input type="text" placeholder="Name" name="repoName" class="span12" >
+                        <input type="text" placeholder="Owner" name="ownerId" class="span12" >
+                        <input type="text" placeholder="Name" name="name" class="span12" >
                         <input type="text" placeholder="Programing language" name="language" class="span12" >
                         <button type="submit" class="btn btn-success">Search!</button>
                     </fieldset>
@@ -122,6 +122,6 @@
         </script>
          -->
     
-    <script src="scripts/8ab52a5b.plugins.js"></script>
+    <script src="scripts/ff0639f4.plugins.js"></script>
 </body>
 </html>

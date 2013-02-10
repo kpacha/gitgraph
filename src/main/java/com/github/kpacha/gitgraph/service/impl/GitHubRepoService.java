@@ -2,6 +2,7 @@ package com.github.kpacha.gitgraph.service.impl;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
 import org.slf4j.Logger;
@@ -85,6 +86,18 @@ public class GitHubRepoService {
 	    gitHubRepo = getGitHubRepoFromGitHub(owner, repoName);
 	}
 	return gitHubRepo;
+    }
+
+    /**
+     * Get a GitHubRepo by its owner's login and the name of the repository
+     * 
+     * @param owner
+     * @param repoName
+     * @return
+     */
+    public List<GitHubRepo> getAllBy(final String property, final String value) {
+	log.debug("Looking for a repo with " + property + "=" + value);
+	return dao.getAllBy(property, value);
     }
 
     /**

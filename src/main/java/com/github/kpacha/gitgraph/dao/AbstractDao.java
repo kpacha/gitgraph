@@ -161,22 +161,88 @@ public class AbstractDao<T> {
      */
     @SuppressWarnings("unchecked")
     public T getById(final String id) {
-	log.debug("Looking for a stored " + getEntityClass() + " with id=" + id);
+	return getBy("id", id);
+    }
+
+    /**
+     * Simple 'getter by' method
+     * 
+     * @param property
+     * @param value
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public T getBy(final String property, final String value) {
+	log.debug("Looking for a stored " + getEntityClass() + " with "
+		+ property + "=" + value);
 	final EntityManager entityManager = emf.createEntityManager();
 	T entity = null;
 	try {
-	    final Query query = entityManager.createQuery("SELECT e FROM "
-		    + entityClass + " e WHERE e.id=:id");
-	    query.setParameter("id", id);
+	    final Query query = constructGetterQuery(property, value,
+		    entityManager);
 	    entity = (T) query.getSingleResult();
 	    log.debug("Entity " + entity + " has been hidrated");
 	} catch (NoResultException e) {
-	    log.debug("No " + getEntityClass() + " has been found with id="
-		    + id);
+	    log.debug("No " + getEntityClass() + " has been found with "
+		    + property + "=" + value);
+	} catch (Exception e) {
+	    log.error(e.getMessage() + " : " + property + "=" + value);
 	} finally {
 	    entityManager.close();
 	}
 	return entity;
+    }
+
+    /**
+     * Simple 'getter by' method
+     * 
+     * @param property
+     * @param value
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public List<T> getAllBy(final String property, final String value) {
+	log.debug("Looking for all stored " + getEntityClass() + "s with "
+		+ property + "=" + value);
+	final EntityManager entityManager = emf.createEntityManager();
+	List<T> entities = new ArrayList<T>();
+	try {
+	    final Query query = constructGetterQuery(property, value,
+		    entityManager);
+	    entities = (List<T>) query.getResultList();
+	    log.debug(entities.size() + " [" + getEntityClass()
+		    + "] entities has been hidrated");
+	} catch (NoResultException e) {
+	    log.debug("No " + getEntityClass() + " has been found with "
+		    + property + "=" + value);
+	} catch (Exception e) {
+	    log.error(e.getMessage() + " : " + property + "=" + value);
+	} finally {
+	    entityManager.close();
+	}
+	return entities;
+    }
+
+    /**
+     * Check the parameter name and value and build a query ready to be executed
+     * 
+     * @param property
+     * @param value
+     * @param entityManager
+     * @return
+     * @throws Exception
+     */
+    private Query constructGetterQuery(final String property,
+	    final String value, final EntityManager entityManager)
+	    throws Exception {
+	if (property == null || property.trim().equals("") || value == null
+		|| value.trim().equals("")) {
+	    throw new Exception("Invalid property name or value");
+	}
+	Query query = entityManager.createQuery("SELECT e FROM " + entityClass
+		+ " e WHERE e." + property + "=:value");
+	query.setParameter("value", value);
+	return query;
     }
 
     /**

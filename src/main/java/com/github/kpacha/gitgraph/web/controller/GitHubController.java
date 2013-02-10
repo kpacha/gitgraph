@@ -1,6 +1,7 @@
 package com.github.kpacha.gitgraph.web.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,6 +24,9 @@ public class GitHubController {
     private static GitHubRepoService service;
     private GitHubService gitHubService;
 
+    private final static String[] POSIBLE_PARAMETERS = new String[] {
+	    "ownerId", "name", "language" };
+
     /**
      * Get repo by Id
      * 
@@ -42,6 +46,41 @@ public class GitHubController {
     }
 
     /**
+     * Search by a parameter
+     * 
+     * @param request
+     * @return
+     */
+    public String getAllBy(final HttpServletRequest request) {
+	@SuppressWarnings("unchecked")
+	String[] parameter = extractSearchParameter(request.getParameterMap());
+	String property = parameter[0];
+	String value = parameter[1];
+	log.debug("looking for the repo with " + property + "=" + value);
+	request.setAttribute("repos", getService().getAllBy(property, value));
+	try {
+	    request.setAttribute("quota", getGitHubService().getGitHubQuota());
+	} catch (IOException e) {
+	    log.error(e.getMessage(), e);
+	}
+	return "repositories";
+    }
+
+    public String[] extractSearchParameter(Map<String, String[]> parameters) {
+	String[] parameter = new String[2];
+	for (String posible : POSIBLE_PARAMETERS) {
+	    if (parameters.containsKey(posible)) {
+		if (!parameters.get(posible)[0].equals("")) {
+		    parameter[0] = posible;
+		    parameter[1] = parameters.get(posible)[0];
+		    break;
+		}
+	    }
+	}
+	return parameter;
+    }
+
+    /**
      * Get repo by owner login and repository name
      * 
      * @param request
@@ -49,7 +88,7 @@ public class GitHubController {
      */
     public String getByCredentials(final HttpServletRequest request) {
 	String owner = request.getParameter("owner");
-	String repoName = request.getParameter("repoName");
+	String repoName = request.getParameter("name");
 	log.debug("looking for the repo: " + owner + "/" + repoName);
 	request.setAttribute("repo", getService().get(owner, repoName));
 	try {

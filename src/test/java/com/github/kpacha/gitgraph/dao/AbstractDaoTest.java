@@ -65,7 +65,7 @@ public class AbstractDaoTest {
     public void getByIdReturnsNullIfNothingFound() {
 	Query query = EasyMock.createMock(Query.class);
 	EasyMock.expect(
-		query.setParameter(EasyMock.matches("id"),
+		query.setParameter(EasyMock.matches("value"),
 			EasyMock.anyObject(String.class))).andReturn(query);
 	EasyMock.expect(query.getSingleResult()).andThrow(
 		new NoResultException());

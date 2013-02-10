@@ -8,7 +8,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>GitHub Graph</title>
+        <title>GitHub Graph - Search Results</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         
@@ -31,7 +31,7 @@
               Logged in as <a href="#" class="navbar-link">Username</a>
             </p>
             <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/">Home</a></li>
               <li><a href="#search">Search</a></li>
               <li><a href="#surprise">Surprise me!</a></li>
             </ul>
@@ -42,70 +42,51 @@
 
     <div class="container-fluid" >
 
-        <div class="hero-unit">
-            <h1>GitHub Graph</h1>
-            <p>Explore GitHub better and faster!</p>
-            <ul>
-                <li>Search repo by name, owner, relevance, language...</li>
-                <li>Recomendations by profile</li>
-            </ul>
-            <h3>Get inspired and stay updated.</h3>
-        </div>
-
         <div class="row-fluid">
-            <div class="span4">
+
+            <div class="span8">
                 <h3>Repositories</h3>
-                <h4>Most popular</h4>
                 <ul class="unstyled">
-					<c:forEach var="repo" items="${reposByWatchers}">
-						<li><a href="index?id=<c:out value="${repo.id}"/>"><c:out value="${repo.name}" /></a><small class="muted text-right pull-right"><span class="badge badge-success"><c:out value="${repo.watchers}"/></span> <span class="badge badge-info"><c:out value="${repo.forks}"/></span></small></li>
-					</c:forEach>
-                </ul>
-                <h4>Most actives</h4>
-                <ul class="unstyled">
-					<c:forEach var="repo" items="${reposByLastPushedAt}">
-						<c:set var="date" value="${repo.pushedAt}"/>
-						<li>
-							<a href="index?id=<c:out value="${repo.id}"/>"><c:out value="${repo.name}" /></a>
-							<div class="pull-right">
-								<abbr class="timeago" title="<fmt:formatDate pattern="yyyy-MM-dd" value="${date}" />"><fmt:formatDate pattern="yyyy-MM-dd" value="${date}" /></abbr>
+					<c:forEach var="repo" items="${repos}">
+                    <li>
+						<c:set var="pushedAt" value="${repo.pushedAt}"/>
+						<c:set var="createdAt" value="${repo.createdAt}"/>
+						<ul class="nav nav-tabs">
+						  <li>
+						  	<h4><a href="index?ownerId=<c:out value="${repo.ownerId}"/>"><c:out value="${repo.ownerId}"/></a> / <a href="index?id=<c:out value="${repo.id}"/>"><c:out value="${repo.name}"/></a></h4>
+						  </li>
+						  <li class="dropdown pull-right">
+						    <a class="dropdown-toggle" data-toggle="dropdown" href="#">more <b class="caret"></b></a>
+						    <ul class="dropdown-menu">
+						    	<li><a href="<c:out value="${repo.svnUrl}"/>" target="_blank"><i class="icon-home"></i> see on GitHub</a></li>
+						    	<li><a href="http://resume.github.com/?<c:out value="${repo.ownerId}"/>" target="_blank"><i class="icon-home"></i> see owner's résumé</a></li>
+						  	</ul>
+						  </li>
+						</ul>
+						<p>
+        					<small><c:out value="${repo.description}"/></small>
+        				</p>
+        				<div class="row-fluid">
+            				<div class="span4">
+	                    		<small class="muted">created <abbr class="timeago" title="<fmt:formatDate pattern="yyyy-MM-dd" value="${createdAt}" />"><fmt:formatDate pattern="yyyy-MM-dd" value="${createdAt}" /></abbr></small>
+	                    	</div>
+            				<div class="span4">
+	                    		<small class="muted">pushed <abbr class="timeago" title="<fmt:formatDate pattern="yyyy-MM-dd" value="${pushedAt}" />"><fmt:formatDate pattern="yyyy-MM-dd" value="${pushedAt}" /></abbr></small>
+	                    	</div>
+            				<div class="span4">
+	                    		<small class="muted text-right pull-right"><span class="badge badge-inverse"><c:out value="${repo.language}"/></span> <span class="badge badge-success"><c:out value="${repo.watchers}"/></span> <span class="badge"><c:out value="${repo.size}"/></span> <span class="badge badge-info"><c:out value="${repo.forks}"/></span></small>
             				</div>
-						</li>
-					</c:forEach>
-                </ul>
-                <h4>Most forked</h4>
-                <ul class="unstyled">
-					<c:forEach var="repo" items="${reposByForks}">
-						<li><a href="index?id=<c:out value="${repo.id}"/>"><c:out value="${repo.name}" /></a><small class="muted text-right pull-right"><span class="badge badge-info"><c:out value="${repo.forks}"/></span></small></li>
+                    	</div>
+                   	</li>
 					</c:forEach>
                 </ul>
             </div>
+
             <div class="span4">
-                <h3>Users</h3>
-                <h4>Most popular</h4>
-                <ul class="unstyled">
-					<c:forEach var="repo" items="${reposByWatchers}">
-						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
-					</c:forEach>
-                </ul>
-                <h4>Most actives</h4>
-                <ul class="unstyled">
-					<c:forEach var="repo" items="${reposByLastPushedAt}">
-						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
-					</c:forEach>
-                </ul>
-                <h4>Most forked</h4>
-                <ul class="unstyled">
-					<c:forEach var="repo" items="${reposByForks}">
-						<li><c:out value="${repo.name}" /> | <a href="index?id=<c:out value="${repo.id}"/>">show</a></li>
-					</c:forEach>
-                </ul>
-            </div>
-            <div class="span4">
-                <h3>Suggestions</h3>
+                <h4>Suggestions</h4>
                 <p>Get recomendations based on your favourite projects, technologies and languages.</p>
                 <a id="surprise" href="/" class="btn btn-success disabled">Surprise me!</a>
-                <h3>Search</h3>
+                <h4>Search</h4>
                 <p>Search repo by name, owner, relevance, language...</p>
                 <form id="search" action="index" method="get">
                     <fieldset>
@@ -117,13 +98,14 @@
                     </fieldset>
                 </form>
             </div>
+
         </div>
         
         <hr>
 		<footer>
 			<p>Quota: <c:out value="${quota}" /></p>
 		</footer>
-
+	
     </div>
 
         <!--[if lt IE 7]>
@@ -132,7 +114,8 @@
 
         <!-- Add your site or application content here -->
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script> -->
+        <script src="scripts/vendor/8bc61845.jquery.min.js"><\/script>
         <script>window.jQuery || document.write('<script src="scripts/vendor/8bc61845.jquery.min.js"><\/script>')</script>
         
         

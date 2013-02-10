@@ -35,16 +35,23 @@ public class IndexServlet extends HttpServlet {
 	log.debug("doGet");
 
 	String view = null;
-	if (request.getParameter("id") != null) {
+	if (request.getParameter("id") != null
+		&& !request.getParameter("id").trim().equals("")) {
 	    // get by id
 	    view = controller.getById(request);
-	} else if (request.getParameter("owner") != null
-		&& request.getParameter("repoName") != null) {
-	    // get by repo credentials
-	    view = controller.getByCredentials(request);
 	} else {
-	    // get all
-	    view = controller.home(request);
+	    @SuppressWarnings("unchecked")
+	    String[] parameter = controller.extractSearchParameter(request
+		    .getParameterMap());
+	    String property = parameter[0];
+	    String value = parameter[1];
+	    if (property != null && value != null) {
+		// get all by a parameter
+		view = controller.getAllBy(request);
+	    } else {
+		// get all
+		view = controller.home(request);
+	    }
 	}
 
 	// delegate the rendering to the jsp view
