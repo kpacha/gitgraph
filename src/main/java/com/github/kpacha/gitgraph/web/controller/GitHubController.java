@@ -1,7 +1,9 @@
 package com.github.kpacha.gitgraph.web.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,10 +54,19 @@ public class GitHubController {
      * @return
      */
     public String getAllBy(final HttpServletRequest request) {
-	@SuppressWarnings("unchecked")
-	String[] parameter = extractSearchParameter(request.getParameterMap());
-	String property = parameter[0];
-	String value = parameter[1];
+	String property = "";
+	String value = "";
+	for (Entry<String, String> entry : extractSearchParameter(
+		request.getParameterMap()).entrySet()) {
+	    if (!entry.getValue().trim().equals("")) {
+		property = entry.getKey();
+		value = entry.getValue();
+		break;
+	    }
+	}
+	if (property.equals("") || value.equals("")) {
+	    return "index";
+	}
 	log.debug("looking for the repo with " + property + "=" + value);
 	request.setAttribute("repos", getService().getAllBy(property, value));
 	try {
@@ -66,14 +77,13 @@ public class GitHubController {
 	return "repositories";
     }
 
-    public String[] extractSearchParameter(Map<String, String[]> parameters) {
-	String[] parameter = new String[2];
+    public Map<String, String> extractSearchParameter(
+	    Map<String, String[]> parameters) {
+	Map<String, String> parameter = new HashMap<String, String>();
 	for (String posible : POSIBLE_PARAMETERS) {
 	    if (parameters.containsKey(posible)) {
 		if (!parameters.get(posible)[0].equals("")) {
-		    parameter[0] = posible;
-		    parameter[1] = parameters.get(posible)[0];
-		    break;
+		    parameter.put(posible, parameters.get(posible)[0]);
 		}
 	    }
 	}
@@ -113,6 +123,20 @@ public class GitHubController {
 	request.setAttribute("reposByLastPushedAt",
 		getService().getSortedBy("pushedAt"));
 	return "index";
+    }
+
+    public String search(HttpServletRequest request) {
+	@SuppressWarnings("unchecked")
+	Map<String, String> parameter = extractSearchParameter(request
+		.getParameterMap());
+	log.debug("looking for the repo with " + parameter);
+	request.setAttribute("repos", getService().getAllBy(parameter));
+	try {
+	    request.setAttribute("quota", getGitHubService().getGitHubQuota());
+	} catch (IOException e) {
+	    log.error(e.getMessage(), e);
+	}
+	return "repositories";
     }
 
     /**

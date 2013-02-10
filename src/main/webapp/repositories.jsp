@@ -86,11 +86,17 @@
                 <h4>Suggestions</h4>
                 <p>Get recomendations based on your favourite projects, technologies and languages.</p>
                 <a id="surprise" href="/" class="btn btn-success disabled">Surprise me!</a>
+                <h4>Inspect</h4>
+                <form id="search" action="/" method="get">
+                    <fieldset class="input-append span12">
+                        <input type="text" placeholder="owner/name" name="id" class="span9" >
+                        <button type="submit" class="btn btn-success">Search!</button>
+                    </fieldset>
+                </form>
                 <h4>Search</h4>
                 <p>Search repo by name, owner, relevance, language...</p>
-                <form id="search" action="index" method="get">
+                <form id="search" action="/" method="post">
                     <fieldset>
-                        <input type="text" placeholder="owner/name" name="id" class="span12" >
                         <input type="text" placeholder="Owner" name="ownerId" class="span12" >
                         <input type="text" placeholder="Name" name="name" class="span12" >
                         <input type="text" placeholder="Programing language" name="language" class="span12" >

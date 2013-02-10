@@ -1,6 +1,7 @@
 package com.github.kpacha.gitgraph.web;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,11 +42,9 @@ public class IndexServlet extends HttpServlet {
 	    view = controller.getById(request);
 	} else {
 	    @SuppressWarnings("unchecked")
-	    String[] parameter = controller.extractSearchParameter(request
-		    .getParameterMap());
-	    String property = parameter[0];
-	    String value = parameter[1];
-	    if (property != null && value != null) {
+	    Map<String, String> parameter = controller
+		    .extractSearchParameter(request.getParameterMap());
+	    if (parameter.size() > 0) {
 		// get all by a parameter
 		view = controller.getAllBy(request);
 	    } else {
@@ -61,6 +60,23 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
+
+	log.debug("doPost");
+
+	String view = null;
+	@SuppressWarnings("unchecked")
+	Map<String, String> parameter = controller
+		.extractSearchParameter(request.getParameterMap());
+	if (parameter.size() > 0) {
+	    // get all by a parameter
+	    view = controller.search(request);
+	} else {
+	    doGet(request, response);
+	    return;
+	}
+
+	// delegate the rendering to the jsp view
+	forward(request, response, view);
     }
 
     /**

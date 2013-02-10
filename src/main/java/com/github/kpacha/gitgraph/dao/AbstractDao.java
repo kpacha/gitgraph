@@ -38,7 +38,7 @@ public class AbstractDao<T> {
      */
     private String entityClass;
 
-    private static final int MAX_RESULTS = 5;
+    protected static final int MAX_RESULTS = 5;
 
     /**
      * Set the class name of the extended repository

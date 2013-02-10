@@ -3,6 +3,7 @@ package com.github.kpacha.gitgraph.service.impl;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.egit.github.core.Repository;
 import org.slf4j.Logger;
@@ -98,6 +99,17 @@ public class GitHubRepoService {
     public List<GitHubRepo> getAllBy(final String property, final String value) {
 	log.debug("Looking for a repo with " + property + "=" + value);
 	return dao.getAllBy(property, value);
+    }
+
+    /**
+     * Search in the store by a map of parameters
+     * 
+     * @param parameter
+     * @return
+     */
+    public Object getAllBy(final Map<String, String> parameter) {
+	log.debug("Looking for a repo with " + parameter);
+	return dao.getAllBy(parameter);
     }
 
     /**

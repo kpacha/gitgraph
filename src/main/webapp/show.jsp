@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -44,34 +45,57 @@
         <div class="row-fluid">
 
             <div class="span8">
-                <h3>Repo <c:out value="${repo.id}" /></h3>
+			  	<h3>
+			  		<a href="index?ownerId=<c:out value="${repo.ownerId}"/>"><c:out value="${repo.ownerId}"/></a> / <a href="index?id=<c:out value="${repo.id}"/>"><c:out value="${repo.name}"/></a>
+			  		<ul class="nav nav-pills pull-right">
+					  <li class="dropdown pull-right">
+					    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b class="caret"></b></a>
+					    <ul class="dropdown-menu">
+					    	<li><small><a href="<c:out value="${repo.svnUrl}"/>" target="_blank"><i class="icon-home"></i> see on GitHub</a></small></li>
+					    	<li><small><a href="http://resume.github.com/?<c:out value="${repo.ownerId}"/>" target="_blank"><i class="icon-home"></i> see owner's résumé</a></small></li>
+					  	</ul>
+					  </li>
+					</ul>
+				</h3>
+				<c:if test="${not empty repo.parentId}">
+					<small class="muted">forked from <a href="/?id=<c:out value="${repo.parentId}" />"><c:out value="${repo.parentId}" /></a></small>
+				</c:if>
                 <dl class="dl-horizontal">
                   <dt>name</dt>
                   <dd><c:out value="${repo.name}" /></dd>
-                  <dt>ownerId</dt>
-                  <dd><c:out value="${repo.ownerId}" /></dd>
+                  <dt>description</dt>
+                  <dd><c:out value="${repo.description}" /></dd>
+                  <dt>is fork</dt>
+                  <dd><c:out value="${repo.fork}" /></dd>
+                  <dt>owner</dt>
+                  <dd><c:out value="${repo.ownerId}" /> <small class="muted"><a href="/?ownerId=<c:out value="${repo.ownerId}" />">see more <c:out value="${repo.ownerId}" />'s repos</a></small></dd>
                   <dt>id</dt>
                   <dd><c:out value="${repo.id}" /></dd>
-                  <dt>repoId</dt>
+                  <dt>key</dt>
                   <dd><c:out value="${repo.repoId}" /></dd>
                   <dt>parent</dt>
-                  <dd><c:out value="${repo.parentId}" /></dd>
-                  <dt>firstScanedAt</dt>
-                  <dd><c:out value="${repo.firstScanedAt}" /></dd>
-                  <dt>lastScanedAt</dt>
-                  <dd><c:out value="${repo.lastScanedAt}" /></dd>
+                  <dd><c:choose><c:when test="${empty repo.parentId}">-</c:when><c:otherwise><a href="/?id=<c:out value="${repo.parentId}" />"><c:out value="${repo.parentId}" /></a></c:otherwise></c:choose></dd>
+                  <dt>homepage</dt>
+                  <dd><c:choose><c:when test="${empty repo.homepage}">-</c:when><c:otherwise><a href="<c:out value="${repo.homepage}" />" target="_blank"><c:out value="${repo.homepage}" /></a></c:otherwise></c:choose></dd>
                   <dt>pushedAt</dt>
-                  <dd><c:out value="${repo.pushedAt}" /></dd>
+				  <c:set var="pushedAt" value="${repo.pushedAt}"/>
+                  <dd><abbr class="timeago" title="<fmt:formatDate pattern="yyyy-MM-dd" value="${pushedAt}" />"><fmt:formatDate pattern="yyyy-MM-dd" value="${pushedAt}" /></abbr></dd>
                   <dt>updatedAt</dt>
-                  <dd><c:out value="${repo.updatedAt}" /></dd>
+				  <c:set var="updatedAt" value="${repo.updatedAt}"/>
+                  <dd><abbr class="timeago" title="<fmt:formatDate pattern="yyyy-MM-dd" value="${updatedAt}" />"><fmt:formatDate pattern="yyyy-MM-dd" value="${updatedAt}" /></abbr></dd>
                   <dt>createdAt</dt>
-                  <dd><c:out value="${repo.createdAt}" /></dd>
-                  <dt>size</dt>
-                  <dd><c:out value="${repo.size}" /></dd>
+				  <c:set var="createdAt" value="${repo.createdAt}"/>
+                  <dd><abbr class="timeago" title="<fmt:formatDate pattern="yyyy-MM-dd" value="${createdAt}" />"><fmt:formatDate pattern="yyyy-MM-dd" value="${createdAt}" /></abbr></dd>
                   <dt>language</dt>
-                  <dd><c:out value="${repo.language}" /></dd>
+                  <dd><span class="badge badge-inverse"><c:out value="${repo.language}"/></span></dd>
+                  <dt>watchers</dt>
+                  <dd><span class="badge badge-success"><c:out value="${repo.watchers}"/></span></dd>
+                  <dt>size</dt>
+                  <dd><span class="badge"><c:out value="${repo.size}"/></span></dd>
                   <dt>forks</dt>
-                  <dd><c:out value="${repo.forks}" /></dd>
+                  <dd><span class="badge badge-info"><c:out value="${repo.forks}"/></span></dd>
+                  <dt>open issues</dt>
+                  <dd><span class="badge badge-important"><c:out value="${repo.openIssues}"/></span></dd>
                 </dl>
             </div>
 
@@ -79,11 +103,17 @@
                 <h4>Suggestions</h4>
                 <p>Get recomendations based on your favourite projects, technologies and languages.</p>
                 <a id="surprise" href="/" class="btn btn-success disabled">Surprise me!</a>
+                <h4>Inspect</h4>
+                <form id="search" action="/" method="get">
+                    <fieldset class="input-append span12">
+                        <input type="text" placeholder="owner/name" name="id" class="span9" >
+                        <button type="submit" class="btn btn-success">Search!</button>
+                    </fieldset>
+                </form>
                 <h4>Search</h4>
                 <p>Search repo by name, owner, relevance, language...</p>
-                <form id="search" action="index" method="get">
+                <form id="search" action="/" method="post">
                     <fieldset>
-                        <input type="text" placeholder="owner/name" name="id" class="span12" >
                         <input type="text" placeholder="Owner" name="ownerId" class="span12" >
                         <input type="text" placeholder="Name" name="name" class="span12" >
                         <input type="text" placeholder="Programing language" name="language" class="span12" >
@@ -96,6 +126,7 @@
         
         <hr>
 		<footer>
+			<small class="muted"><strong>First scan:</strong> <c:out value="${repo.firstScanedAt}" />. <strong>Last scan:</strong> <c:out value="${repo.lastScanedAt}" /></small>
 			<p>Quota: <c:out value="${quota}" /></p>
 		</footer>
 	
