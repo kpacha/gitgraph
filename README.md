@@ -129,3 +129,7 @@ Look at the _pom.xml_ file for the plugin configuration and customize them
         </executions>
     </plugin>
 
+
+## Other dependencies
+
+The [jQery timeago](https://github.com/rmm5t/jquery-timeago) library is used for the time formating
