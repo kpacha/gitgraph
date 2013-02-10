@@ -91,25 +91,6 @@ public class GitHubController {
     }
 
     /**
-     * Get repo by owner login and repository name
-     * 
-     * @param request
-     * @return
-     */
-    public String getByCredentials(final HttpServletRequest request) {
-	String owner = request.getParameter("owner");
-	String repoName = request.getParameter("name");
-	log.debug("looking for the repo: " + owner + "/" + repoName);
-	request.setAttribute("repo", getService().get(owner, repoName));
-	try {
-	    request.setAttribute("quota", getGitHubService().getGitHubQuota());
-	} catch (IOException e) {
-	    log.error(e.getMessage(), e);
-	}
-	return "show";
-    }
-
-    /**
      * Get all the stored repositories
      * 
      * @param request

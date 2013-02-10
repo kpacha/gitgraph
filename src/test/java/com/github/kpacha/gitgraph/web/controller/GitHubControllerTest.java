@@ -51,38 +51,6 @@ public class GitHubControllerTest {
     }
 
     @Test
-    public void testGetByCredentials() throws IOException {
-	GitHubRepo gitHubRepo = ModelHelper.getMockedGitHubRepo();
-
-	// Should ask for a repo to the service
-	EasyMock.expect(
-		service.get(EasyMock.matches(gitHubRepo.getOwnerId()),
-			EasyMock.matches(gitHubRepo.getName()))).andReturn(
-		gitHubRepo);
-	EasyMock.replay(service);
-	controller.setService(service);
-
-	// Should ask for the owner and the repoName parameters
-	EasyMock.expect(request.getParameter(EasyMock.matches("owner")))
-		.andReturn(gitHubRepo.getOwnerId());
-	EasyMock.expect(request.getParameter(EasyMock.matches("repoName")))
-		.andReturn(gitHubRepo.getName());
-
-	expectGetResult(gitHubRepo);
-	EasyMock.replay(request);
-
-	// Should ask for the quota to github service
-	gitHubService = getMockedGitHubService(FAKE_QUOTA);
-	controller.setGitHubService(gitHubService);
-
-	// run
-	Assert.assertEquals("show", controller.getByCredentials(request));
-
-	// verify
-	EasyMock.verify(gitHubService);
-    }
-
-    @Test
     public void testGetById() throws IOException {
 	GitHubRepo gitHubRepo = ModelHelper.getMockedGitHubRepo();
 
